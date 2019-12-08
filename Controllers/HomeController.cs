@@ -14,7 +14,14 @@ namespace AzureChatApp.Controllers
         }
         public ActionResult Chat()
         {
-            return View();
+            return View("Login");
+        }
+        [HttpPost]
+        public ActionResult Chat(string name)
+        {
+            ViewBag.name = name;
+
+            return View("Chat");
         }
 
         public ActionResult About()
