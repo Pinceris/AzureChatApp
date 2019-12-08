@@ -21,7 +21,12 @@ namespace AzureChatApp.Controllers
         {
             ViewBag.name = name;
 
-            return View("Chat");
+            using( var context = new MessagesContext())
+            {
+                List<Message> messages = context.Messages.ToList();
+
+                return View("Chat", messages);
+            }
         }
 
         public ActionResult About()

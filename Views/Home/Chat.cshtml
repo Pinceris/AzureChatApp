@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<Message>
+
+@{
     ViewBag.Title = "Chat";
 }
 <h2>Chat</h2>
@@ -7,6 +9,10 @@
     <input type="button" id="sendmessage" value="Send" />
     <input type="hidden" id="displayname" />
     <ul id="discussion">
+        @foreach(var msg in Model)
+        {
+        <li><strong>@msg.sender_name </strong> @msg.message1</li>
+        }
     </ul>
 </div>
 @section scripts {
