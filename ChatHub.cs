@@ -10,10 +10,23 @@ namespace AzureChatApp
     {
         public void Send(string name, string message)
         {
-            SaveMessage(name, message);
+            if (message == "CLEAR DB NOW")
+            {
+                if (name == "admin")
+                {
+                    ClearMessages();
+                    Clients.All.addNewMessageToPage("SYSTEM", "The Chat has just been cleared by admin");
+                    SaveMessage("SYSTEM", "The Chat has just been cleared by admin");
+                }
+            }
+            else
+            {
 
-            // Call the addNewMessageToPage method to update clients.
-            Clients.All.addNewMessageToPage(name, message);
+                SaveMessage(name, message);
+
+                // Call the addNewMessageToPage method to update clients.
+                Clients.All.addNewMessageToPage(name, message);
+            }
         }
         private void SaveMessage(string name, string message)
         {
@@ -30,6 +43,13 @@ namespace AzureChatApp
                 context.Messages.Add(messageVar);
                 context.SaveChanges();
 
+            }
+        }
+        private void ClearMessages()
+        {
+            using (var context = new MessagesContext())
+            {
+                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [dbo].[Messages]");
             }
         }
 

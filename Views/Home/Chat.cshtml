@@ -1,20 +1,43 @@
 ﻿@model List<Message>
 
-@{
-    ViewBag.Title = "Chat";
-}
-<h2>Chat</h2>
-<div class="container">
-    <input type="text" id="message" />
-    <input type="button" id="sendmessage" value="Send" />
-    <input type="hidden" id="displayname" />
-    <ul id="discussion">
-        @foreach(var msg in Model)
+<link rel="stylesheet" type="text/css" href="~/Styles/ChatStyle.css">
+
+<div class="chat_window">
+    <div class="top_menu">
+        <div class="buttons">
+            Logged in as: @ViewBag.name
+        </div>
+        <div class="title">Chat</div>
+     </div>
+    <ul id="discussion" class="messages">
+        @if (Model != null)
         {
-        <li><strong>@msg.sender_name </strong> @msg.message1</li>
+            foreach (var msg in Model)
+            {
+                <li class="message"><strong>@msg.sender_name: </strong>@msg.message1 <span class="time-left">@msg.created_at</span></li>
+            }
         }
     </ul>
+    <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper">
+            <input id="message" class="message_input" placeholder="Type your message here..." />
+        </div>
+        <div id="sendmessage" class="send_message">
+            <div class="icon"></div>
+            <div class="text">Send</div>
+        </div>
+    </div>
 </div>
+<div class="message_template">
+    <li class="message">
+        <div class="avatar"></div>
+        <div class="text_wrapper">
+            <div class="text"></div>
+        </div>
+    </li>
+</div>
+
+
 @section scripts {
     <!--Script references. -->
     <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
@@ -30,8 +53,7 @@
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (name, message) {
                 // Add the message to the page.
-                $('#discussion').append('<li><strong>' + htmlEncode(name)
-                    + '</strong>: ' + htmlEncode(message) + '</li>');
+                $('#discussion').append('<li><strong>' + name + ': </strong>' + message + '</li>');
             };
             // Set initial focus to message input box.
             $('#message').focus();

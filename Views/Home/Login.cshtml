@@ -1,14 +1,14 @@
 ﻿<link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="~/Styles/LoginStyle.css">
 
-@using (Html.BeginForm("Chat", "Home", FormMethod.Post))
+@using (Html.BeginForm("Login", "Home", FormMethod.Post))
 {
     <div class="box">
         <h1>Dashboard</h1>
 
-        <input type="text" name="name" value="name" onFocus="field_focus(this, 'name');" onblur="field_blur(this, 'name');" class="email" />
+        <input type="text" name="name" class="email" required/>
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" class="btn-lg btn-success" />
 
     </div> <!-- End Box -->
 }

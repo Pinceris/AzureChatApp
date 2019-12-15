@@ -12,21 +12,32 @@ namespace AzureChatApp.Controllers
         {
             return View();
         }
-        public ActionResult Chat()
+        public ActionResult Login()
         {
             return View("Login");
         }
         [HttpPost]
-        public ActionResult Chat(string name)
+        public ActionResult Login(string name)
         {
-            ViewBag.name = name;
+            if (name == "") return View("Login");
+            else
+            {
+                TempData["name"] = name;
 
-            using( var context = new MessagesContext())
+                return RedirectToAction("Chat");
+            }
+        }
+        public ActionResult Chat()
+        {
+            ViewBag.name = (string)TempData["name"];
+
+            using (var context = new MessagesContext())
             {
                 List<Message> messages = context.Messages.ToList();
 
+                //TempData["model"] = messages;
                 return View("Chat", messages);
-            }
+            }            
         }
 
         public ActionResult About()
