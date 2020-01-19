@@ -1,6 +1,7 @@
 ﻿using AzureChatApp.Repository;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
+using SignalRChat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AzureChatApp.Controllers
 {
     public class HomeController : Controller
     {
-        public static readonly ChatRepo ChatRepository = new ChatRepo(new RedisClient("localhost"));
+        
 
         public ActionResult Index()
         {
@@ -41,7 +42,7 @@ namespace AzureChatApp.Controllers
 
             ViewBag.online = MvcApplication.Sessions.Count;
 
-            IList<Message> messages = ChatRepository.GetAll();
+            IList<Message> messages = Startup.ChatRepository.GetAll();
             if (messages != null)
             {
                 return View("Chat", messages);

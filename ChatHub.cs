@@ -7,6 +7,7 @@ using Microsoft.AspNet.SignalR;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
 using AzureChatApp.Controllers;
+using SignalRChat;
 
 namespace AzureChatApp
 {
@@ -36,13 +37,18 @@ namespace AzureChatApp
                 created_at = DateTime.Now
             };
 
-            HomeController.ChatRepository.Store(messageVar);
+            Startup.ChatRepository.Store(messageVar);
 
             Clients.All.addNewMessageToPage(messageVar.sender_name, messageVar.message1, messageVar.created_at.ToString());
         }
         private void ClearMessages()
         {
+            IList<Message> messages = Startup.ChatRepository.GetAll();
 
+            foreach (Message msg in messages)
+            {
+                Startup.ChatRepository.Delete(msg.Id);
+            }
         }
 
     }
