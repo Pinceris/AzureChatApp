@@ -1,11 +1,12 @@
-﻿@model List<Message>
+﻿@model IList<Message>
 
 <link rel="stylesheet" type="text/css" href="~/Styles/ChatStyle.css">
 
 <div class="chat_window">
     <div class="top_menu">
         <div class="buttons">
-            Logged in as: @ViewBag.name
+            Logged in as: @ViewBag.name <br />
+            Online: @ViewBag.online
         </div>
         <div class="title">Chat</div>
      </div>
@@ -51,9 +52,9 @@
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
-            chat.client.addNewMessageToPage = function (name, message) {
+            chat.client.addNewMessageToPage = function (name, message, timestamp) {
                 // Add the message to the page.
-                $('#discussion').append('<li><strong>' + name + ': </strong>' + message + '</li>');
+                $('#discussion').append('<li class="message"><strong>' + name + ': </strong>' + message + ' <span class="time-left">' + timestamp + '</span></li>');
             };
             // Set initial focus to message input box.
             $('#message').focus();

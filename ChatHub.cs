@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using AzureChatApp.Repository;
 using Microsoft.AspNet.SignalR;
+using ServiceStack.Redis;
+using ServiceStack.Redis.Generic;
+using AzureChatApp.Controllers;
 
 namespace AzureChatApp
 {
@@ -15,42 +19,30 @@ namespace AzureChatApp
                 if (name == "admin")
                 {
                     ClearMessages();
-                    Clients.All.addNewMessageToPage("SYSTEM", "The Chat has just been cleared by admin");
-                    SaveMessage("SYSTEM", "The Chat has just been cleared by admin");
+                    SaveMessageAndSend("SYSTEM", "The Chat has just been cleared by admin");
                 }
             }
             else
             {
-
-                SaveMessage(name, message);
-
-                // Call the addNewMessageToPage method to update clients.
-                Clients.All.addNewMessageToPage(name, message);
+                SaveMessageAndSend(name, message);
             }
         }
-        private void SaveMessage(string name, string message)
+        private void SaveMessageAndSend(string name, string message)
         {
-            using (var context = new MessagesContext())
+            Message messageVar = new Message
             {
-                Random rand = new Random();
-                var messageVar = new Message
-                {
-                    sender_name = name,
-                    message1 = message,
-                    created_at = DateTime.Now
+                sender_name = name,
+                message1 = message,
+                created_at = DateTime.Now
+            };
 
-                };
-                context.Messages.Add(messageVar);
-                context.SaveChanges();
+            HomeController.ChatRepository.Store(messageVar);
 
-            }
+            Clients.All.addNewMessageToPage(messageVar.sender_name, messageVar.message1, messageVar.created_at.ToString());
         }
         private void ClearMessages()
         {
-            using (var context = new MessagesContext())
-            {
-                context.Database.ExecuteSqlCommand("TRUNCATE TABLE [dbo].[Messages]");
-            }
+
         }
 
     }

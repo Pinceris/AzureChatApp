@@ -8,7 +8,12 @@ namespace AzureChatApp
 
     public partial class Message
     {
-        public int id { get; set; }
+        public Message ()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public Guid Id { get; set; }
 
         [StringLength(50)]
         public string sender_name { get; set; }

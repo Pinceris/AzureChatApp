@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AzureChatApp.Repository;
+using ServiceStack.Redis;
+using ServiceStack.Redis.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +11,8 @@ namespace AzureChatApp.Controllers
 {
     public class HomeController : Controller
     {
+        public static readonly ChatRepo ChatRepository = new ChatRepo(new RedisClient("localhost"));
+
         public ActionResult Index()
         {
             return View();
@@ -19,25 +24,30 @@ namespace AzureChatApp.Controllers
         [HttpPost]
         public ActionResult Login(string name)
         {
-            if (name == "") return View("Login");
-            else
-            {
-                TempData["name"] = name;
+            Session["username"] = name;
 
-                return RedirectToAction("Chat");
-            }
+            return RedirectToAction("Chat");
         }
         public ActionResult Chat()
         {
-            ViewBag.name = (string)TempData["name"];
+            var name = Session["username"];
 
-            using (var context = new MessagesContext())
+            if (name == null)
             {
-                List<Message> messages = context.Messages.ToList();
+                return View("Login");
+            }
 
-                //TempData["model"] = messages;
+            ViewBag.name = name.ToString();
+
+            ViewBag.online = MvcApplication.Sessions.Count;
+
+            IList<Message> messages = ChatRepository.GetAll();
+            if (messages != null)
+            {
                 return View("Chat", messages);
-            }            
+            }
+
+            return View("Chat");
         }
 
         public ActionResult About()
