@@ -22,7 +22,7 @@
         {
             foreach (var msg in Model.Messages)
             {
-                <li class="message"><strong>@msg.sender_name: </strong>@msg.message1 <span class="time-left">@msg.created_at</span></li>
+            <li class="message"><strong>@msg.sender_name: </strong>@msg.message1 <span class="time-left">@msg.created_at</span></li>
             }
         }
     </ul>
@@ -55,13 +55,24 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
+           $(document).ready(function () {
+               $('#RefreshPage').click(function () {
+                   location.reload();
+           });
+           });
+        
         $(function () {
+            $("#message").keypress(function(event){
+                if(event.keyCode == 13){
+                    $("#sendmessage").click();
+                    }
+            });
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
             chat.client.addNewMessageToPage = function (name, message, timestamp) {
                 // Add the message to the page.
-                $('#discussion').append('<li class="message"><strong>' + name + ': </strong>' + message + ' <span class="time-left">' + timestamp + '</span></li>');
+                $('#discussion').append('<li class="message"><strong>' + name + ': </strong>' + message + '<span class="time-left">' + timestamp + '</span></li>');
             };
             // Set initial focus to message input box.
             $('#message').focus();

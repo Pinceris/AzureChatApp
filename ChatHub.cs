@@ -20,7 +20,7 @@ namespace AzureChatApp
                 if (name == "admin")
                 {
                     ClearMessages();
-                    SaveMessageAndSend("SYSTEM", "The Chat has just been cleared by admin");
+                    SaveMessageAndSend("SYSTEM", "The Chat has just been cleared by admin <a href='/'>Click here to reload chat</a>");
                 }
             }
             else
@@ -37,9 +37,18 @@ namespace AzureChatApp
                 created_at = DateTime.Now
             };
 
-            Startup.ChatRepository.Store(messageVar);
+            if (name == "SYSTEM")
+            {
+                messageVar.message1 = "The Chat has just been cleared by admin";
+                Startup.ChatRepository.Store(messageVar);
+                Clients.All.addNewMessageToPage(messageVar.sender_name, message, messageVar.created_at.ToString());
+            }
+            else
+            {
+                Startup.ChatRepository.Store(messageVar);
 
-            Clients.All.addNewMessageToPage(messageVar.sender_name, messageVar.message1, messageVar.created_at.ToString());
+                Clients.All.addNewMessageToPage(messageVar.sender_name, messageVar.message1, messageVar.created_at.ToString());
+            }       
         }
         private void ClearMessages()
         {

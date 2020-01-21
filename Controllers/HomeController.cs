@@ -22,6 +22,7 @@ namespace AzureChatApp.Controllers
 
             return View("Login");
         }
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Login(string name)
@@ -43,25 +44,24 @@ namespace AzureChatApp.Controllers
             ViewBag.online = MvcApplication.Sessions.Count;
 
             ChatViewModel chatModel = BuildModel(name.ToString());
-            if (chatModel.Messages != null)
-            {
-                return View("Chat", chatModel);
-            }
 
-            return View("Chat");
+            return View("Chat", chatModel);
         }
-
+        //helper methods
         private ChatViewModel BuildModel(string name)
         {
             ChatViewModel chatModel = new ChatViewModel();
 
-            chatModel.Messages = Startup.ChatRepository.GetAll();
+            var msg = Startup.ChatRepository.GetAll();
+            if (msg != null)
+            {
+                chatModel.Messages = msg;
+            }
 
             if (!Startup.ActiveSessionPairs.ContainsKey(Session.SessionID))
             {
                 Startup.ActiveSessionPairs.Add(Session.SessionID, name);
             }
-
 
             chatModel.SessionNicks = Startup.ActiveSessionPairs;
 
