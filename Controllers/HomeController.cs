@@ -1,4 +1,5 @@
-﻿using AzureChatApp.Repository;
+﻿using AzureChatApp.Models;
+using AzureChatApp.Repository;
 using ServiceStack.Redis;
 using ServiceStack.Redis.Generic;
 using SignalRChat;
@@ -12,16 +13,16 @@ namespace AzureChatApp.Controllers
 {
     public class HomeController : Controller
     {
-        
-
-        public ActionResult Index()
-        {
-            return View();
-        }
         public ActionResult Login()
         {
+            if(Session["username"] != null)
+            {
+                return RedirectToAction("Chat");
+            }
+
             return View("Login");
         }
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Login(string name)
         {
@@ -32,37 +33,39 @@ namespace AzureChatApp.Controllers
         public ActionResult Chat()
         {
             var name = Session["username"];
-
             if (name == null)
             {
                 return View("Login");
             }
-
             ViewBag.name = name.ToString();
+
 
             ViewBag.online = MvcApplication.Sessions.Count;
 
-            IList<Message> messages = Startup.ChatRepository.GetAll();
-            if (messages != null)
+            ChatViewModel chatModel = BuildModel(name.ToString());
+            if (chatModel.Messages != null)
             {
-                return View("Chat", messages);
+                return View("Chat", chatModel);
             }
 
             return View("Chat");
         }
 
-        public ActionResult About()
+        private ChatViewModel BuildModel(string name)
         {
-            ViewBag.Message = "Your application description page.";
+            ChatViewModel chatModel = new ChatViewModel();
 
-            return View();
-        }
+            chatModel.Messages = Startup.ChatRepository.GetAll();
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            if (!Startup.ActiveSessionPairs.ContainsKey(Session.SessionID))
+            {
+                Startup.ActiveSessionPairs.Add(Session.SessionID, name);
+            }
 
-            return View();
+
+            chatModel.SessionNicks = Startup.ActiveSessionPairs;
+
+            return chatModel;
         }
     }
 }

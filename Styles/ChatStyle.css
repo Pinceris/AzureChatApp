@@ -7,6 +7,26 @@ body {
     font-family: "Calibri", "Roboto", sans-serif;
 }
 
+.side_panel {
+    position: absolute;
+    width: 250px;
+    height: 500px;
+    border-radius: 10px;
+    background-color: #fff;
+    left: 10%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f8f8f8;
+    overflow: hidden;
+}
+.side_panel li {
+    font-size:large;
+}
+h3 {
+    text-align: center;
+}
+
 .chat_window {
     position: absolute;
     width: calc(100% - 20px);

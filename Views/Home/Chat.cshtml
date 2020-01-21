@@ -1,19 +1,26 @@
-﻿@model IList<Message>
+﻿@model AzureChatApp.Models.ChatViewModel
 
 <link rel="stylesheet" type="text/css" href="~/Styles/ChatStyle.css">
-
+<div class="side_panel">
+    <h3>Online users</h3>
+    <ul>
+        @foreach (var session in Model.SessionNicks)
+        {
+            <li style="color:springgreen">@session.Value</li>
+        }
+    </ul>
+</div>
 <div class="chat_window">
     <div class="top_menu">
         <div class="buttons">
-            Logged in as: @ViewBag.name <br />
-            Online: @ViewBag.online
+            Logged in as: @ViewBag.name
         </div>
         <div class="title">Chat</div>
      </div>
     <ul id="discussion" class="messages">
-        @if (Model != null)
+        @if (Model.Messages != null)
         {
-            foreach (var msg in Model)
+            foreach (var msg in Model.Messages)
             {
                 <li class="message"><strong>@msg.sender_name: </strong>@msg.message1 <span class="time-left">@msg.created_at</span></li>
             }
@@ -29,14 +36,14 @@
         </div>
     </div>
 </div>
-<div class="message_template">
+@*<div class="message_template">
     <li class="message">
         <div class="avatar"></div>
         <div class="text_wrapper">
             <div class="text"></div>
         </div>
     </li>
-</div>
+</div>*@
 
 
 @section scripts {
