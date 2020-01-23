@@ -55,7 +55,8 @@ namespace AzureChatApp.Controllers
             var msg = Startup.ChatRepository.GetAll();
             if (msg != null)
             {
-                chatModel.Messages = msg;
+                IList<Message> sortedMessages = msg.OrderBy(q => q.created_at).ToList();
+                chatModel.Messages = sortedMessages;
             }
 
             if (!Startup.ActiveSessionPairs.ContainsKey(Session.SessionID))

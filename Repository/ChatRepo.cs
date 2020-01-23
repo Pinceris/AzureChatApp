@@ -41,9 +41,23 @@ namespace AzureChatApp.Repository
             _redisClient.DeleteById<Message>(id);
         }
 
+
+        private bool disposed = false;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _redisClient.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
         public void Dispose()
         {
-            _redisClient.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
