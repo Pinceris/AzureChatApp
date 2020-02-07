@@ -40,24 +40,24 @@ namespace AzureChatApp
             if (name == "SYSTEM")
             {
                 messageVar.message1 = "The Chat has just been cleared by admin";
-                Startup.ChatRepository.Store(messageVar);
+                //Startup.ChatRepository.Store(messageVar);
                 Clients.All.addNewMessageToPage(messageVar.sender_name, message, messageVar.created_at.ToString());
             }
             else
             {
-                Startup.ChatRepository.Store(messageVar);
+                //Startup.ChatRepository.Store(messageVar);
 
                 Clients.All.addNewMessageToPage(messageVar.sender_name, messageVar.message1, messageVar.created_at.ToString());
             }       
         }
         private void ClearMessages()
         {
-            IList<Message> messages = Startup.ChatRepository.GetAll();
+            //IList<Message> messages = Startup.ChatRepository.GetAll();
 
-            foreach (Message msg in messages)
-            {
-                Startup.ChatRepository.Delete(msg.Id);
-            }
+            //foreach (Message msg in messages)
+            //{
+            //    Startup.ChatRepository.Delete(msg.Id);
+            //}
         }
 
     }

@@ -52,7 +52,7 @@ namespace AzureChatApp.Controllers
         {
             ChatViewModel chatModel = new ChatViewModel();
 
-            var msg = Startup.ChatRepository.GetAll();
+            var msg = Startup.ChatRepository.getAllMessages();
             if (msg != null)
             {
                 IList<Message> sortedMessages = msg.OrderBy(q => q.created_at).ToList();
