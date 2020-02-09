@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="MessagesContext-Web.config Connection String" description="MessagesContext Connection String used in web.config by the application to access the database." defaultValue="data source=chatserver47.database.windows.net;initial catalog=chatDB;persist security info=True;user id=azureuser;password=password1.;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Agent\ 47\\source\\repos\\AzureChatApp\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MessagesContext']/@connectionString" />
+  </parameter>
+</parameters>
