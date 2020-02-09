@@ -219,7 +219,6 @@
     <Compile Include="Repository\ChatRepo.cs" />
     <Compile Include="Repository\IChatRepo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />

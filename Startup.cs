@@ -2,13 +2,14 @@
 using Microsoft.Owin;
 using AzureChatApp.Repository;
 using System.Collections.Generic;
+using System.Configuration;
 
 [assembly: OwinStartup(typeof(SignalRChat.Startup))]
 namespace SignalRChat
 {
     public class Startup
     {
-        private static readonly string connStr = "mongodb://root:root@cluster0-shard-00-00-9fzg3.mongodb.net:27017,cluster0-shard-00-01-9fzg3.mongodb.net:27017,cluster0-shard-00-02-9fzg3.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+        private static readonly string connStr = ConfigurationManager.ConnectionStrings["MongoConnectionString"].ConnectionString;
         private static readonly string database = "chat";
 
         public static readonly ChatRepo ChatRepository = new ChatRepo(connStr, database);

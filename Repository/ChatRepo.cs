@@ -45,20 +45,5 @@ namespace AzureChatApp.Repository
 
             Messages.DeleteOne(deleteFilter);
         }
-
-
-        //private bool disposed = false;
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (!this.disposed)
-        //    {
-        //        if (disposing)
-        //        {
-        //            _redisClient.Dispose();
-        //        }
-        //    }
-        //    this.disposed = true;
-        //}
-
     }
 }

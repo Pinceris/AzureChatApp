@@ -122,3 +122,4 @@ C:\Users\Agent 47\source\repos\AzureChatApp\bin\MongoDB.Bson.xml
 C:\Users\Agent 47\source\repos\AzureChatApp\bin\MongoDB.Driver.xml
 C:\Users\Agent 47\source\repos\AzureChatApp\bin\MongoDB.Driver.Core.xml
 C:\Users\Agent 47\source\repos\AzureChatApp\bin\Snappy.NET.xml
+C:\Users\Agent 47\source\repos\AzureChatApp\obj\Debug\AzureChatApp.csprojAssemblyReference.cache
