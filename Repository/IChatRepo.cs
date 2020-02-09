@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AzureChatApp.Repository
 {
-    public interface IChatRepo : IDisposable
+    public interface IChatRepo
     {
         IList<Message> GetAll();
         Message Get(Guid id);

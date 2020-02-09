@@ -1,63 +1,64 @@
-﻿using ServiceStack.Redis;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace AzureChatApp.Repository
 {
-    public class ChatRepo : IChatRepo, IDisposable
+    public class ChatRepo : IChatRepo
     {
-        private readonly IRedisClient _redisClient;
+        private readonly IMongoClient MongoClient;
+        private readonly IMongoDatabase DB;
+        private readonly IMongoCollection<Message> Messages;
 
-        public ChatRepo(IRedisClient redisClient)
+        public ChatRepo(string connStr, string database)
         {
-            _redisClient = redisClient;
+            MongoClient = new MongoClient(connStr);
+            DB = MongoClient.GetDatabase(database);
+            Messages = DB.GetCollection<Message>(database);
         }
 
         public IList<Message> GetAll()
         {
-            var typedClient = _redisClient.As<Message>();
-
-            return typedClient.GetAll();
+            return Messages.Find(new BsonDocument()).ToList();
         }
 
         public Message Get(Guid id)
         {
-            var typedClient = _redisClient.As<Message>();
+            var getFilter = Builders<Message>.Filter.Eq("Id", id);
 
-            return typedClient.GetById(id);
+            return Messages.Find(getFilter).FirstOrDefault();
         }
 
         public Message Store(Message message)
         {
-            var typedClient = _redisClient.As<Message>();
+            Messages.InsertOne(message);
 
-            return typedClient.Store(message);
+            return message;
         }
 
         public void Delete(Guid id)
         {
-            _redisClient.DeleteById<Message>(id);
+            var deleteFilter = Builders<Message>.Filter.Eq("Id", id);
+
+            Messages.DeleteOne(deleteFilter);
         }
 
 
-        private bool disposed = false;
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _redisClient.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        //private bool disposed = false;
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (!this.disposed)
+        //    {
+        //        if (disposing)
+        //        {
+        //            _redisClient.Dispose();
+        //        }
+        //    }
+        //    this.disposed = true;
+        //}
+
     }
 }
