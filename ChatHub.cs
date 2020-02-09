@@ -23,7 +23,7 @@ namespace AzureChatApp
                     SaveMessageAndSend("SYSTEM", "The Chat has just been cleared by admin <a href='/'>Click here to reload chat</a>");
                 }
             }
-            else
+            else if (message.Length > 0)
             {
                 SaveMessageAndSend(name, message);
             }
